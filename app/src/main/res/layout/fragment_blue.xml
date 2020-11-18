@@ -1,9 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#0000FF"
-    tools:context=".FragmentBlue">
+    tools:context=".fragments.FragmentBlue"
+    android:orientation="horizontal">
 
-</FrameLayout>
+    <Button
+        android:id="@+id/button_bl_go_to_red"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:background="#FF0000"
+        android:text="Red" />
+    <Button
+        android:id="@+id/button_bl_go_to_green"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:background="#00FF00"
+        android:text="Green" />
+
+</LinearLayout>

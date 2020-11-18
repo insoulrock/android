@@ -3,4 +3,6 @@
     <string name="btn_fr_green_text">Open Green Fragment</string>
     <string name="btn_fr_red_text">Open Red Fragment</string>
     <string name="btn_fr_blue_text">Open Blue Fragment</string>
+    <string name="go_to_fragment_windows"> Go To Fragment Windows </string>
+    <string name="go_to_activity_windows"> Go To Activity Windows </string>
 </resources>

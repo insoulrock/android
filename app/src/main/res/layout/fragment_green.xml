@@ -1,8 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#00FF00"
-    tools:context=".FragmentGreen">
-</FrameLayout>
+    tools:context=".fragments.FragmentGreen"
+    android:orientation="horizontal">
+
+    <Button
+        android:id="@+id/button_gr_go_to_red"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:background="#FF0000"
+        android:text="Red" />
+    <Button
+        android:id="@+id/button_gr_go_to_blue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:background="#0000FF"
+        android:text="Blue" />
+</LinearLayout>

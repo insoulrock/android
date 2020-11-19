@@ -5,14 +5,14 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.Fragment
-import com.example.androidtestapp.fragments.FragmentGreen
 import com.example.androidtestapp.helpers.Router
 import com.example.androidtestapp.helpers.applicationModule
 import org.koin.android.ext.android.inject
-import org.koin.android.ext.android.startKoin
+import org.koin.android.ext.koin.androidContext
+import org.koin.core.component.KoinComponent
+import org.koin.core.context.startKoin
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), KoinComponent {
     private val LOG_TAG: String = "myLogs";
     private val EXTRA_KEY: String = "key1";
     private val router:Router by inject()
@@ -21,7 +21,6 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         Log.d(LOG_TAG, "MainActivity onCreate");
-        startKoin(this, listOf(applicationModule))
         router.putFragmentManager(supportFragmentManager)
     }
 
@@ -35,6 +34,6 @@ class MainActivity : AppCompatActivity() {
 
     fun openMainWindow(view: View)
     {
-        router.showFragment(GreenFragment)
+        router.showFragment(FragmentType.GreenFragment)
     }
 }

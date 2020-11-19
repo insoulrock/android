@@ -7,8 +7,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.androidtestapp.R
+import org.koin.core.component.KoinComponent
 
-class FragmentMain : Fragment()
+class FragmentMain : Fragment(), KoinComponent
 {
     private val LOG_TAG: String  = "myLogs";
 

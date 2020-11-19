@@ -6,14 +6,10 @@ import com.example.androidtestapp.*
 import com.example.androidtestapp.fragments.FragmentBlue
 import com.example.androidtestapp.fragments.FragmentGreen
 import com.example.androidtestapp.fragments.FragmentRed
-import org.koin.standalone.KoinComponent
-import org.koin.standalone.inject
+import org.koin.core.component.KoinComponent
 
 class Router: KoinComponent
 {
-    private val greenFragment:FragmentGreen by inject()
-    private val redFragment:FragmentRed by inject()
-    private val blueFragment:FragmentBlue by inject()
     private lateinit var fragmentManager: FragmentManager
 
     fun putFragmentManager(fragmentManager: FragmentManager)
@@ -25,9 +21,9 @@ class Router: KoinComponent
     {
         when(fragmentType)
         {
-            BlueFragment -> openFragment(blueFragment)
-            GreenFragment -> openFragment(greenFragment)
-            RedFragment -> openFragment(redFragment)
+            is FragmentType.BlueFragment -> openFragment(FragmentBlue())
+            is FragmentType.GreenFragment -> openFragment(FragmentGreen())
+            is FragmentType.RedFragment -> openFragment(FragmentRed())
         }
     }
 

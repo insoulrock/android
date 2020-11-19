@@ -11,18 +11,17 @@ import com.example.androidtestapp.helpers.applicationModule
 import org.koin.android.ext.android.inject
 import org.koin.android.ext.android.startKoin
 
-private  val LOG_TAG: String = "myLogs";
-const val EXTRA_KEY: String = "key1";
-
 class MainActivity : AppCompatActivity() {
-
-    val router by inject<Router>()
+    private val LOG_TAG: String = "myLogs";
+    private val EXTRA_KEY: String = "key1";
+    private val router:Router by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         Log.d(LOG_TAG, "MainActivity onCreate");
         startKoin(this, listOf(applicationModule))
+        router.putFragmentManager(supportFragmentManager)
     }
 
     fun onClickOpenActivityWindows(view: View)
@@ -35,14 +34,6 @@ class MainActivity : AppCompatActivity() {
 
     fun openMainWindow(view: View)
     {
-        addToFragmentManager(router.getGreenFragment())
-    }
-
-    fun addToFragmentManager(fragment: Fragment)
-    {
-        supportFragmentManager.beginTransaction().apply {
-            replace(R.id.fragment_container, fragment)
-            addToBackStack(null)
-            commit() }
+        router.showFragment(FragmentEnum.GREEN_FRAGMENT)
     }
 }

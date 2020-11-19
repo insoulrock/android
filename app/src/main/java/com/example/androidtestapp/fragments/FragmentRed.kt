@@ -4,22 +4,27 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import com.example.androidtestapp.FragmentEnum
 import com.example.androidtestapp.R
 import com.example.androidtestapp.helpers.Router
 import kotlinx.android.synthetic.main.fragment_red.view.*
 import org.koin.android.ext.android.inject
 
-class FragmentRed : ColorFragment() {
-    private val router by inject<Router>()
+class FragmentRed : Fragment() {
+    private val router:Router by inject()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        return inflater.inflate(R.layout.fragment_red, container, false)
+    }
 
-        var view = inflater.inflate(R.layout.fragment_red, container, false)
-        view.button_rd_go_to_blue.setOnClickListener { openFragment(router.getBlueFragment())}
-        view.button_rd_go_to_green.setOnClickListener { openFragment(router.getGreenFragment())}
-        return view;
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        view.button_rd_go_to_blue.setOnClickListener { router.showFragment(FragmentEnum.BLUE_FRAGMENT) }
+        view.button_rd_go_to_green.setOnClickListener { router.showFragment(FragmentEnum.GREEN_FRAGMENT) }
     }
 }

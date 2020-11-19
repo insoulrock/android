@@ -6,6 +6,7 @@ import android.util.Log
 import android.widget.TextView
 
 private  val LOG_TAG: String = "myLogs";
+private val EXTRA_KEY: String = "key1";
 
 class SecondActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

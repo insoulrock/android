@@ -1,37 +1,42 @@
 package com.example.androidtestapp.helpers
 
-import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
+import com.example.androidtestapp.FragmentEnum
 import com.example.androidtestapp.R
-import com.example.androidtestapp.fragments.ColorFragment
 import com.example.androidtestapp.fragments.FragmentBlue
 import com.example.androidtestapp.fragments.FragmentGreen
 import com.example.androidtestapp.fragments.FragmentRed
-import org.koin.android.ext.android.inject
+import org.koin.standalone.KoinComponent
+import org.koin.standalone.inject
 
-class Router: ColorFragment()//Не понял от какого класса унаследоваться, чтобы инжект был доступен...
+class Router: KoinComponent
 {
-    private val greenFragment by inject<FragmentGreen>()
-    private val redFragment by inject<FragmentRed>()
-    private val blueFragment by inject<FragmentBlue>()
+    private val greenFragment:FragmentGreen by inject()
+    private val redFragment:FragmentRed by inject()
+    private val blueFragment:FragmentBlue by inject()
+    private lateinit var fragmentManager: FragmentManager
 
-    fun getGreenFragment(): Fragment
+    fun putFragmentManager(fragmentManager: FragmentManager)
     {
-        openFragment(greenFragment)
-        return greenFragment
+        this.fragmentManager = fragmentManager
     }
 
-    fun getRedFragment(): Fragment
+    fun showFragment(fragmentEnum: FragmentEnum)
     {
-        return  redFragment
+        when(fragmentEnum)
+        {
+            FragmentEnum.BLUE_FRAGMENT -> openFragment(blueFragment)
+            FragmentEnum.GREEN_FRAGMENT -> openFragment(greenFragment)
+            FragmentEnum.RED_FRAGMENT -> openFragment(redFragment)
+        }
     }
 
-    fun getBlueFragment(): Fragment
+    private fun openFragment(fragment: Fragment)
     {
-        return  blueFragment
+        fragmentManager.beginTransaction().apply {
+            replace(R.id.fragment_container, fragment)
+            addToBackStack(null)
+            commit() }
     }
 }

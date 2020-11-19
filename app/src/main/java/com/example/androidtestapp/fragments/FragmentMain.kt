@@ -8,9 +8,10 @@ import android.view.View
 import android.view.ViewGroup
 import com.example.androidtestapp.R
 
-private val LOG_TAG: String  = "myLogs";
+class FragmentMain : Fragment()
+{
+    private val LOG_TAG: String  = "myLogs";
 
-class FragmentMain : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Log.d(LOG_TAG, "FragmentMain onCreate");

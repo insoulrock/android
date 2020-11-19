@@ -2,8 +2,7 @@ package com.example.androidtestapp.helpers
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
-import com.example.androidtestapp.FragmentEnum
-import com.example.androidtestapp.R
+import com.example.androidtestapp.*
 import com.example.androidtestapp.fragments.FragmentBlue
 import com.example.androidtestapp.fragments.FragmentGreen
 import com.example.androidtestapp.fragments.FragmentRed
@@ -22,13 +21,13 @@ class Router: KoinComponent
         this.fragmentManager = fragmentManager
     }
 
-    fun showFragment(fragmentEnum: FragmentEnum)
+    fun showFragment(fragmentType: FragmentType)
     {
-        when(fragmentEnum)
+        when(fragmentType)
         {
-            FragmentEnum.BLUE_FRAGMENT -> openFragment(blueFragment)
-            FragmentEnum.GREEN_FRAGMENT -> openFragment(greenFragment)
-            FragmentEnum.RED_FRAGMENT -> openFragment(redFragment)
+            BlueFragment -> openFragment(blueFragment)
+            GreenFragment -> openFragment(greenFragment)
+            RedFragment -> openFragment(redFragment)
         }
     }
 

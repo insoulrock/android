@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import com.example.androidtestapp.fragments.FragmentGreen
 import com.example.androidtestapp.helpers.Router
 import com.example.androidtestapp.helpers.applicationModule
 import org.koin.android.ext.android.inject
@@ -34,6 +35,6 @@ class MainActivity : AppCompatActivity() {
 
     fun openMainWindow(view: View)
     {
-        router.showFragment(FragmentEnum.GREEN_FRAGMENT)
+        router.showFragment(GreenFragment)
     }
 }

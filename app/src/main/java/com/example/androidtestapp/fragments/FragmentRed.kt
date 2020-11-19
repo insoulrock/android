@@ -5,7 +5,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.example.androidtestapp.FragmentEnum
+import com.example.androidtestapp.BlueFragment
+import com.example.androidtestapp.GreenFragment
 import com.example.androidtestapp.R
 import com.example.androidtestapp.helpers.Router
 import kotlinx.android.synthetic.main.fragment_red.view.*
@@ -24,7 +25,7 @@ class FragmentRed : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        view.button_rd_go_to_blue.setOnClickListener { router.showFragment(FragmentEnum.BLUE_FRAGMENT) }
-        view.button_rd_go_to_green.setOnClickListener { router.showFragment(FragmentEnum.GREEN_FRAGMENT) }
+        view.button_rd_go_to_blue.setOnClickListener { router.showFragment(BlueFragment) }
+        view.button_rd_go_to_green.setOnClickListener { router.showFragment(GreenFragment) }
     }
 }

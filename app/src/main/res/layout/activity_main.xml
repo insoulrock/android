@@ -14,7 +14,27 @@
     android:layout_weight="1"
     android:onClick="openMainWindow"
     android:text="@string/go_to_fragment_windows" />
+
     <Button
+        android:id="@+id/btn_go_to_material"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:onClick="onClickOpenMaterial"
+        android:text="@string/go_to_material" />
+
+    <Button
+
+        android:id="@+id/btn_go_to_recycler"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:onClick="onClickOpenRecycler"
+        android:text="@string/btn_go_to_recycler" />
+
+
+    <Button
+
         android:id="@+id/btn_go_to_activity_windows"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

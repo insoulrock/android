@@ -3,9 +3,7 @@ package com.example.androidtestapp.helpers
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import com.example.androidtestapp.*
-import com.example.androidtestapp.fragments.FragmentBlue
-import com.example.androidtestapp.fragments.FragmentGreen
-import com.example.androidtestapp.fragments.FragmentRed
+import com.example.androidtestapp.fragments.*
 import org.koin.core.component.KoinComponent
 
 class Router: KoinComponent
@@ -24,6 +22,8 @@ class Router: KoinComponent
             is FragmentType.BlueFragment -> openFragment(FragmentBlue())
             is FragmentType.GreenFragment -> openFragment(FragmentGreen())
             is FragmentType.RedFragment -> openFragment(FragmentRed())
+            is FragmentType.MaterialFragment -> openFragment(FragmentMaterial())
+            is FragmentType.RecyclerFragment -> openFragment(FragmentRecyclerView())
         }
     }
 

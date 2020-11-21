@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#0000FF"
+    android:background="@color/colorBlue"
     tools:context=".fragments.FragmentBlue"
     android:orientation="horizontal">
 
@@ -12,14 +12,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:background="#FF0000"
+        android:background="@color/colorRed"
         android:text="Red" />
     <Button
         android:id="@+id/button_bl_go_to_green"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:background="#00FF00"
+        android:background="@color/colorGreen"
         android:text="Green" />
 
 </LinearLayout>

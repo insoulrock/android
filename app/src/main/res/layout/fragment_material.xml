@@ -1,24 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
+<LinearLayout android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="horizontal"
-    tools:context=".fragments.FragmentMaterial">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <TextView
+        android:paddingTop="55dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/textViewDescription"
+        android:textSize="20dp"
+        android:textColor="@color/colorPrimary"
+        android:gravity="center">
+    </TextView>
+    <LinearLayout android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:paddingTop="40dp"
+        xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <EditText
-        android:id="@+id/editTextRandom"
-        android:layout_width="188dp"
-        android:layout_height="44dp"
-        android:drawableBottom="@color/colorRed"
-        android:textAlignment="center"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewDescription"
-        app:layout_constraintVertical_bias="0.091" />
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textField"
+            android:layout_width="88dp"
+            android:layout_height="wrap_content"
+            app:helperTextEnabled="true"
+            app:helperText="@string/textViewWinsCount"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            >
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:id="@+id/textViewWinsCount"
+                />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/edit_text_random_result"
+            android:layout_width="200dp"
+            android:gravity="center_horizontal"
+            android:textSize="33dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_height="wrap_content"
+            android:text="@string/edit_text_random_result" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/filledTextField"
+            android:layout_width="88dp"
+            android:layout_height="wrap_content"
+            app:helperTextEnabled="true"
+            app:helperText="@string/textViewLossesCount"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            >
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:id="@+id/textViewLossesCount"
+                />
+        </com.google.android.material.textfield.TextInputLayout>
+    </LinearLayout>
 
     <Button
         android:id="@+id/buttonRandom"
@@ -26,58 +69,16 @@
         android:layout_height="45dp"
         android:onClick="onClickRenerateRandom"
         android:text="@string/buttonRandom"
+        android:layout_marginTop="40dp"
+        android:layout_gravity="center"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editTextRandom"
         app:layout_constraintVertical_bias="0.094" />
 
-    <TextView
-        android:id="@+id/textViewDescription"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="@string/textViewDescription"
-        android:textAlignment="center"
-        android:textSize="20dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.473"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+</LinearLayout>
 
-    <TextView
-        android:id="@+id/textViewWinnerCount"
-        android:layout_width="50dp"
-        android:layout_height="44dp"
-        android:textStyle="bold"
-        android:layout_marginEnd="10dp"
-        android:text="@string/textViewWinsCount"
-        android:textAlignment="center"
-        app:layout_constraintBottom_toBottomOf="@+id/editTextRandom"
-        app:layout_constraintEnd_toStartOf="@+id/editTextRandom"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/editTextRandom"
-        app:layout_constraintVertical_bias="1.0" />
 
-    <TextView
-        android:id="@+id/textViewLoserCount"
-        android:layout_width="50dp"
-        android:textStyle="bold"
-        android:layout_height="44dp"
-        android:layout_marginStart="10dp"
-        android:text="@string/textViewLossesCount"
-        android:textAlignment="center"
-        app:layout_constraintBottom_toBottomOf="@+id/editTextRandom"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/editTextRandom"
-        app:layout_constraintTop_toTopOf="@+id/editTextRandom" />
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_begin="20dp" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+

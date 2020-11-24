@@ -9,16 +9,17 @@ import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.TextView
 import com.example.androidtestapp.R
+import com.google.android.material.textfield.TextInputEditText
 import kotlinx.android.synthetic.main.fragment_material.view.*
 import org.koin.core.component.KoinComponent
 import kotlin.random.Random
 
 class FragmentMaterial : Fragment(), KoinComponent {
-    private lateinit var editTextRandom:EditText
-    private lateinit var textViewWins:TextView
-    private lateinit var textViewLosses:TextView
+    private lateinit var editTextRandom: TextInputEditText
+    private lateinit var textViewWins: TextInputEditText
+    private lateinit var textViewLosses: TextInputEditText
 
-    private val colorWinner: Int = Color.parseColor("#00FF00")
+    private val colorWinner: Int = Color.parseColor("#33AD2F")
     private val colorLoser: Int = Color.parseColor("#FF0000")
     private var countLosses:Int = 0
     private var countWins:Int = 0
@@ -32,13 +33,13 @@ class FragmentMaterial : Fragment(), KoinComponent {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        editTextRandom = view.findViewById(R.id.editTextRandom)
-        textViewWins = view.findViewById(R.id.textViewWinnerCount)
-        textViewLosses = view.findViewById(R.id.textViewLoserCount)
+        editTextRandom = view.findViewById(R.id.edit_text_random_result)
+        textViewWins = view.findViewById(R.id.textViewWinsCount)
+        textViewLosses = view.findViewById(R.id.textViewLossesCount)
 
         view.buttonRandom.setOnClickListener { onClickRenerateRandom(view) }
-        textViewWins.setText("Wins: $countWins", TextView.BufferType.EDITABLE)
-        textViewLosses.setText("Losses: $countLosses", TextView.BufferType.EDITABLE)
+        textViewWins.setText(countWins.toString(), TextView.BufferType.EDITABLE)
+        textViewLosses.setText(countLosses.toString(), TextView.BufferType.EDITABLE)
     }
 
     fun onClickRenerateRandom(view: View) {
@@ -51,9 +52,9 @@ class FragmentMaterial : Fragment(), KoinComponent {
         }
         else  countLosses++
 
-        editTextRandom.setBackgroundColor(colorRes)
-        editTextRandom.setText("Your result: $rnd", TextView.BufferType.EDITABLE)
-        textViewWins.setText("Wins:\n$countWins", TextView.BufferType.EDITABLE)
-        textViewLosses.setText("Losses:\n$countLosses", TextView.BufferType.EDITABLE)
+        editTextRandom.setTextColor(colorRes)
+        editTextRandom.setText(rnd.toString(), TextView.BufferType.EDITABLE)
+        textViewWins.setText(countWins.toString(), TextView.BufferType.EDITABLE)
+        textViewLosses.setText(countLosses.toString(), TextView.BufferType.EDITABLE)
     }
 }

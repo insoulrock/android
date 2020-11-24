@@ -12,13 +12,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:background="@color/colorRed"
+        android:backgroundTint="@color/colorRed"
         android:text="Red" />
     <Button
         android:id="@+id/button_gr_go_to_blue"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:background="@color/colorBlue"
+        android:backgroundTint="@color/colorBlue"
         android:text="Blue" />
 </LinearLayout>

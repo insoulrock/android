@@ -1,23 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/linearLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorGreen"
-    tools:context=".fragments.FragmentGreen"
-    android:orientation="horizontal">
+    tools:context=".fragments.FragmentGreen">
+
     <Button
         android:id="@+id/button_gr_go_to_red"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
         android:backgroundTint="@color/colorRed"
-        android:text="Red" />
+        android:text="Red"
+        app:layout_constraintBaseline_toBaselineOf="@+id/button_gr_go_to_blue"
+        app:layout_constraintEnd_toStartOf="@+id/button_gr_go_to_blue"
+        app:layout_constraintStart_toStartOf="parent" />
+
     <Button
         android:id="@+id/button_gr_go_to_blue"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
         android:backgroundTint="@color/colorBlue"
-        android:text="Blue" />
-</LinearLayout>
+        android:text="Blue"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/button_gr_go_to_red"
+        app:layout_constraintTop_toTopOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>

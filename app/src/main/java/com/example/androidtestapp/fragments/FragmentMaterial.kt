@@ -2,6 +2,7 @@ package com.example.androidtestapp.fragments
 
 import android.graphics.Color
 import android.os.Bundle
+import android.provider.ContactsContract
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -9,8 +10,11 @@ import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.TextView
 import com.example.androidtestapp.R
+import com.example.androidtestapp.helpers.DataProvider
+import com.example.androidtestapp.helpers.Router
 import com.google.android.material.textfield.TextInputEditText
 import kotlinx.android.synthetic.main.fragment_material.view.*
+import org.koin.android.ext.android.inject
 import org.koin.core.component.KoinComponent
 import kotlin.random.Random
 

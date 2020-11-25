@@ -1,8 +1,8 @@
 package com.example.androidtestapp.models
 
 class TickerModel {
-    var instrument: String? = null
-    var last: Double? = null
+    public var instrument: String? = null
+    public var last: Double? = null
     var percentChange: Double? = null
     var low: Double? = null
     var high: Double? = null

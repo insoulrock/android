@@ -8,19 +8,14 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.androidtestapp.R
+import com.example.androidtestapp.helpers.DataProvider
 import com.example.androidtestapp.helpers.RecyclerAdapter
-import com.example.androidtestapp.models.TickerModel
-import com.google.gson.GsonBuilder
 import kotlinx.android.synthetic.main.fragment_recycler_view.*
-import okhttp3.*
-import java.io.IOException
-import java.util.concurrent.CountDownLatch
+import org.koin.android.ext.android.inject
 
 class FragmentRecyclerView : Fragment() {
-    private val URL:String = "https://api.crex24.com/v2/public/tickers"
     private var recyclerAdapter: RecyclerAdapter = RecyclerAdapter()
-    private var okHttpClient: OkHttpClient = OkHttpClient()
-    private  lateinit var tickers: List<TickerModel>
+    private val dataProvider: DataProvider by inject()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -36,21 +31,8 @@ class FragmentRecyclerView : Fragment() {
     }
 
     private fun addDataSet(){
-        val request: Request = Request.Builder().url(URL).build()
-        val countDownLatch = CountDownLatch(1)
-        okHttpClient.newCall(request).enqueue(object: Callback {
-            override fun onFailure(call: Call?, e: IOException?) { countDownLatch.countDown() }
-
-            override fun onResponse(call: Call?, response: Response?) {
-                var json = response?.body()?.string()
-                val gson = GsonBuilder().create()
-                tickers = gson.fromJson(json,Array<TickerModel>::class.java).toList()
-                recyclerAdapter.submitList(tickers)
-                countDownLatch.countDown()
-            }
-        })
-
-        countDownLatch.await()
+        var tickers = dataProvider.getTickers()
+        recyclerAdapter.submitList(tickers)
     }
 
     private fun initRecyclerView(){

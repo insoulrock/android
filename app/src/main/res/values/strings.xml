@@ -10,6 +10,9 @@
     <string name="buttonRandom">Roll</string>
     <string name="textViewWinsCount">Wins</string>
     <string name="textViewLossesCount">Losses</string>
+    <string name="ticker_course_text">0.1234567899999</string>
+    <string name="ticker_percent_change_text">99.99</string>
+    <string name="ticker_name_text">BTC-BTC</string>
     <string name="edit_text_random_result"></string>
     <string name="btn_go_to_recycler">Go To Recycler View</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>

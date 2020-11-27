@@ -9,7 +9,7 @@ import android.view.ViewGroup
 import com.example.androidtestapp.R
 import org.koin.core.component.KoinComponent
 
-class FragmentMain : Fragment(), KoinComponent
+class FragmentMenu : Fragment(), KoinComponent
 {
     private val LOG_TAG: String  = "myLogs";
 
@@ -23,6 +23,6 @@ class FragmentMain : Fragment(), KoinComponent
         savedInstanceState: Bundle?
     ): View? {
         Log.d(LOG_TAG, "FragmentMain onCreateView");
-        return inflater.inflate(R.layout.fragment_main, container, false)
+        return inflater.inflate(R.layout.fragment_menu, container, false)
     }
 }

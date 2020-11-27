@@ -1,34 +1,26 @@
 package com.example.androidtestapp.helpers
 
 import com.example.androidtestapp.models.TickerModel
-import com.google.gson.GsonBuilder
-import okhttp3.*
 import org.koin.core.component.KoinComponent
-import java.io.IOException
-import java.util.concurrent.CountDownLatch
+import org.koin.core.component.inject
 
 class DataProvider : KoinComponent {
-    private val URL:String = "https://api.crex24.com/v2/public/tickers"
-    private var okHttpClient: OkHttpClient = OkHttpClient()
-    private  lateinit var tickers: List<TickerModel>
+    private val URL_TICKERS:String = "https://api.crex24.com/v2/public/tickers"
+    private var tickers:List<TickerModel> = ArrayList()
+    private val httpRequester:HttpRequester by inject()
 
-    public fun getTickers() : List<TickerModel>
+    fun getTickers() : List<TickerModel>
     {
-        val request: Request = Request.Builder().url(URL).build()
-        val countDownLatch = CountDownLatch(1)
+        var respJson = httpRequester.Get(URL_TICKERS)
+        if(respJson.isNullOrEmpty()) return listOf(TickerModel())
 
-        okHttpClient.newCall(request).enqueue(object: Callback {
-            override fun onFailure(call: Call?, e: IOException?) { countDownLatch.countDown() }
-
-            override fun onResponse(call: Call?, response: Response?) {
-                var json = response?.body()?.string()
-                val gson = GsonBuilder().create()
-                tickers = gson.fromJson(json,Array<TickerModel>::class.java).toList()
-                countDownLatch.countDown()
-            }
-        })
-
-        countDownLatch.await()
+        tickers = JsonConverter.Convert(respJson)
+//        val gson = GsonBuilder().create()
+//        tickers = gson.fromJson(respJson, object: TypeToken<ArrayList<TickerModel>>() {}.type)
+////        tickers = JsonConverter().Convert(respJson, TypeToken<List<TickerModel>>())
+//
+//        var tickersConverted = GsonBuilder().create().fromJson(respJson, Array<TickerModel>::class.java)
+//        if(tickersConverted != null) tickers = tickersConverted;
 
         return tickers;
     }

@@ -1,5 +1,6 @@
 package com.example.androidtestapp.helpers
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,13 +9,12 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.layout_recycler_view.view.*
 import com.example.androidtestapp.R
 import com.example.androidtestapp.models.TickerModel
-import kotlin.collections.ArrayList
 
-class RecyclerAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>()
+class RecyclerAdapter constructor(val context: Context) : RecyclerView.Adapter<RecyclerView.ViewHolder>()
 {
-    private var items: List<TickerModel> = ArrayList()
-    private val colorWinner: Int = Color.parseColor("#33AD2F")
-    private val colorLoser: Int = Color.parseColor("#FF0000")
+    private lateinit var items: List<TickerModel>
+    private val colorWinner: Int = context.resources.getColor(R.color.colorSoftGreen, context.theme)
+    private val colorLoser: Int = context.resources.getColor(R.color.colorRed, context.theme)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return ViewHolder(

@@ -27,6 +27,7 @@ class MainActivity : AppCompatActivity(), KoinComponent {
             myFragment = supportFragmentManager.getFragment(savedInstanceState, "FragmentMaterial")
 
         router.putFragmentManager(supportFragmentManager)
+        router.showFragment(FragmentType.MainFragment)
     }
 
     fun onClickOpenActivityWindows(view: View)

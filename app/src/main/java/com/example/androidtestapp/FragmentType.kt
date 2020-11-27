@@ -7,4 +7,5 @@ sealed class FragmentType
     object BlueFragment: FragmentType()
     object MaterialFragment: FragmentType()
     object RecyclerFragment: FragmentType()
+    object MainFragment: FragmentType()
 }

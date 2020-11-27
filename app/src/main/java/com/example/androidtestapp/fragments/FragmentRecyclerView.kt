@@ -14,7 +14,7 @@ import kotlinx.android.synthetic.main.fragment_recycler_view.*
 import org.koin.android.ext.android.inject
 
 class FragmentRecyclerView : Fragment() {
-    private var recyclerAdapter: RecyclerAdapter = RecyclerAdapter()
+    private lateinit var recyclerAdapter: RecyclerAdapter
     private val dataProvider: DataProvider by inject()
 
     override fun onCreateView(
@@ -24,6 +24,10 @@ class FragmentRecyclerView : Fragment() {
         return inflater.inflate(R.layout.fragment_recycler_view, container, false)
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        recyclerAdapter = RecyclerAdapter(view.context)
+    }
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         initRecyclerView()

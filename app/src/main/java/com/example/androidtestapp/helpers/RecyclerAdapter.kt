@@ -4,11 +4,11 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.graphics.Color
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.layout_recycler_view.view.*
 import com.example.androidtestapp.R
 import com.example.androidtestapp.models.TickerModel
+import io.reactivex.rxjava3.annotations.NonNull
 
 class RecyclerAdapter constructor(val context: Context) : RecyclerView.Adapter<RecyclerView.ViewHolder>()
 {

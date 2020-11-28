@@ -32,6 +32,7 @@ class MainActivity : AppCompatActivity(), KoinComponent {
 
     fun onClickOpenActivityWindows(view: View)
     {
+
         Log.d(LOG_TAG, "MainActivity onClickOpenActivityWindows")
         var intent = Intent(this, SecondActivity::class.java)
         intent.putExtra(EXTRA_KEY, "Hello!")

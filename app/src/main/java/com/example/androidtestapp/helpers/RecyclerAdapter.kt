@@ -12,7 +12,7 @@ import com.example.androidtestapp.models.TickerModel
 
 class RecyclerAdapter constructor(val context: Context) : RecyclerView.Adapter<RecyclerView.ViewHolder>()
 {
-    private lateinit var items: List<TickerModel>
+    private var items: List<TickerModel> = ArrayList<TickerModel>()
     private val colorWinner: Int = context.resources.getColor(R.color.colorSoftGreen, context.theme)
     private val colorLoser: Int = context.resources.getColor(R.color.colorRed, context.theme)
 
@@ -51,6 +51,7 @@ class RecyclerAdapter constructor(val context: Context) : RecyclerView.Adapter<R
 
     fun submitList(tickers: List<TickerModel>){
         items = tickers
+        notifyDataSetChanged()
     }
 
     class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView)

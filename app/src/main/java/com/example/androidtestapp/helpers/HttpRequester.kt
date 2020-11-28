@@ -1,29 +1,29 @@
 package com.example.androidtestapp.helpers
 
+import android.util.Log
+import io.reactivex.rxjava3.core.Observable
 import okhttp3.*
 import java.io.IOException
-import java.util.concurrent.CountDownLatch
+import java.lang.Exception
+import kotlin.concurrent.thread
 
 class HttpRequester {
     private var client: OkHttpClient = OkHttpClient()
 
-    fun Get(url: String):String?
+    fun Get(url: String) :Observable<String>
     {
-        val countDownLatch = CountDownLatch(1)
-
-        var request: Request = Request.Builder().url(url).build()
-        var resp:String? = ""
-        client.newCall(request).enqueue(object: Callback {
-            override fun onFailure(call: Call?, e: IOException?) { countDownLatch.countDown() }
-
-            override fun onResponse(call: Call?, response: Response?) {
-                resp = response?.body()?.string()
-                countDownLatch.countDown()
+        return Observable.fromCallable  {
+            try {
+                var request: Request = Request.Builder().url(url).build()
+                var resp = client.newCall(request).execute()
+                return@fromCallable resp?.body()?.string()
             }
-        })
-        countDownLatch.await()
-
-        return resp;
+            catch (exc: Exception)
+            {
+                Log.e("123", exc.toString())
+                return@fromCallable "[]"
+            }
+        }
     }
 
     fun GetAsync(url: String):String?

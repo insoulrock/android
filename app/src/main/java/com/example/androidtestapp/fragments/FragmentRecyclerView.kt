@@ -58,15 +58,15 @@ class FragmentRecyclerView : Fragment() {
         thread {
             Log.d("123", "${Thread.currentThread()} has run1.")
             var obsRes = dataProvider.getTickers()
-            var disposable = obsRes
+            disposable = obsRes
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe { recyclerAdapter.submitList(it) }
         }
 
-            AndroidSchedulers.mainThread().scheduleDirect({
-                recyclerAdapter.submitList(tickers)
-            }, 20, TimeUnit.SECONDS)
-            Log.d("123", "${Thread.currentThread()} has run2.")
+//            AndroidSchedulers.mainThread().scheduleDirect({
+//                recyclerAdapter.submitList(tickers)
+//            }, 20, TimeUnit.SECONDS)
+//            Log.d("123", "${Thread.currentThread()} has run2.")
         }
     }
 

@@ -10,15 +10,11 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.androidtestapp.R
 import com.example.androidtestapp.helpers.DataProvider
-import com.example.androidtestapp.helpers.JsonConverter
 import com.example.androidtestapp.helpers.RecyclerAdapter
-import com.example.androidtestapp.models.TickerModel
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
-import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.disposables.Disposable
-import okhttp3.Request
+import kotlinx.android.synthetic.main.fragment_recycler_view.*
 import org.koin.android.ext.android.inject
-import java.lang.Exception
 import java.util.concurrent.TimeUnit
 import kotlin.concurrent.thread
 
@@ -37,10 +33,8 @@ class FragmentRecyclerView : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         recyclerAdapter = RecyclerAdapter(view.context)
-//        disposable = AndroidSchedulers.mainThread().schedulePeriodicallyDirect({
-//            recycler_view.visibility =
-//                if (recycler_view.visibility == View.GONE) View.VISIBLE else View.GONE
-//        }, 0, 2, TimeUnit.SECONDS)
+        disposable = AndroidSchedulers.mainThread()
+            .schedulePeriodicallyDirect({ addDataSet() }, 0, 5, TimeUnit.SECONDS)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -60,13 +54,10 @@ class FragmentRecyclerView : Fragment() {
             var obsRes = dataProvider.getTickers()
             disposable = obsRes
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe { recyclerAdapter.submitList(it) }
-        }
-
-//            AndroidSchedulers.mainThread().scheduleDirect({
-//                recyclerAdapter.submitList(tickers)
-//            }, 20, TimeUnit.SECONDS)
-//            Log.d("123", "${Thread.currentThread()} has run2.")
+                .subscribe {
+                    recyclerAdapter.submitList(it)
+                    Log.d("123", "addDataSet ${Thread.currentThread()}")
+                }
         }
     }
 

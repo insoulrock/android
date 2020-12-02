@@ -1,7 +1,8 @@
 package com.example.androidtestapp.helpers
 
 import android.util.Log
-import io.reactivex.rxjava3.core.Observable
+import io.reactivex.Observable
+import io.reactivex.Single
 import okhttp3.*
 import java.io.IOException
 import java.lang.Exception
@@ -10,9 +11,9 @@ import kotlin.concurrent.thread
 class HttpRequester {
     private var client: OkHttpClient = OkHttpClient()
 
-    fun Get(url: String) :Observable<String>
+    fun Get(url: String) : Single<String>
     {
-        return Observable.fromCallable  {
+        return Single.fromCallable  {
             try {
                 var request: Request = Request.Builder().url(url).build()
                 var resp = client.newCall(request).execute()
@@ -21,7 +22,7 @@ class HttpRequester {
             catch (exc: Exception)
             {
                 Log.e("123", exc.toString())
-                return@fromCallable "[]"
+                return@fromCallable null
             }
         }
     }

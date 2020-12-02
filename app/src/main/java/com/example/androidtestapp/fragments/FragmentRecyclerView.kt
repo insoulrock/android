@@ -5,18 +5,22 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.androidtestapp.R
 import com.example.androidtestapp.helpers.DataProvider
 import com.example.androidtestapp.helpers.RecyclerAdapter
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
-import io.reactivex.rxjava3.disposables.Disposable
+import com.example.androidtestapp.models.TickerModel
+import com.jakewharton.rxbinding2.widget.RxTextView
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.Disposable
+import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.fragment_recycler_view.*
 import org.koin.android.ext.android.inject
+import java.util.*
 import java.util.concurrent.TimeUnit
-import kotlin.concurrent.thread
 
 class FragmentRecyclerView : Fragment() {
     private lateinit var recyclerAdapter: RecyclerAdapter
@@ -35,6 +39,14 @@ class FragmentRecyclerView : Fragment() {
         recyclerAdapter = RecyclerAdapter(view.context)
         disposable = AndroidSchedulers.mainThread()
             .schedulePeriodicallyDirect({ addDataSet() }, 0, 5, TimeUnit.SECONDS)
+
+        RxTextView.textChanges(textEditSearch)
+            .debounce(500, TimeUnit.MILLISECONDS)
+            .subscribe({
+                var ss = dataProvider.getTickers()
+                recyclerAdapter.submitList()
+                Log.d("123", "input text -> $it")
+            })
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -49,16 +61,20 @@ class FragmentRecyclerView : Fragment() {
     }
 
     private fun addDataSet() {
-        thread {
-            Log.d("123", "${Thread.currentThread()} has run1.")
-            var obsRes = dataProvider.getTickers()
-            disposable = obsRes
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe {
+        Log.d("123", "${Thread.currentThread()} has run1.")
+        disposable = dataProvider.getTickers()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(
+                {
                     recyclerAdapter.submitList(it)
+                    if (it.count() > 0) { recycler_view_loading?.visibility = View.GONE }
                     Log.d("123", "addDataSet ${Thread.currentThread()}")
+                },
+                {
+                    Log.d(tag, it.localizedMessage.toString())
                 }
-        }
+            )
     }
 
     private fun initRecyclerView() {

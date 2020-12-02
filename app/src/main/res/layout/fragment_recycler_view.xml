@@ -3,13 +3,34 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center_vertical"
-    tools:context=".fragments.FragmentRecyclerView">
-
+    tools:context=".fragments.FragmentRecyclerView"
+    android:paddingStart="16dp"
+    android:paddingEnd="16dp">
+    <androidx.appcompat.widget.AppCompatEditText
+        android:id="@+id/textEditSearch"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="none"
+        android:textSize="16dp"
+        android:hint="Enter name">
+    </androidx.appcompat.widget.AppCompatEditText>
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="611dp"
+        android:layout_marginTop="36dp"
         tools:visibility="visible" />
+
+
+    <TextView
+        android:id="@+id/recycler_view_loading"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        android:text="@string/recycler_view_loading"
+        android:gravity="center"
+        android:layout_gravity="center"
+        android:visibility="visible"></TextView>
 
 </FrameLayout>

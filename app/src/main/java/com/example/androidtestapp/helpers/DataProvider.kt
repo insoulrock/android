@@ -1,20 +1,21 @@
 package com.example.androidtestapp.helpers
 
 import com.example.androidtestapp.models.TickerModel
-import io.reactivex.rxjava3.core.Observable
+import io.reactivex.Scheduler
+import io.reactivex.Single
+import io.reactivex.schedulers.Schedulers
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
 class DataProvider : KoinComponent {
     private val URL_TICKERS:String = "https://api.crex24.com/v2/public/tickers"
-    private var tickers:List<TickerModel> = ArrayList()
     private val httpRequester:HttpRequester by inject()
 
-    fun getTickers() : Observable<List<TickerModel>>
+    fun getTickers() : Single<List<TickerModel>>
     {
         var observable = httpRequester.Get(URL_TICKERS)
-        return observable.map { data ->
-            JsonConverter.Convert<List<TickerModel>>(data)
-        }
+        return observable
+            .subscribeOn(Schedulers.io())
+            .map { data -> JsonConverter.Convert<List<TickerModel>>(data) }
     }
 }

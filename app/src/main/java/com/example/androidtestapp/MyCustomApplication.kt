@@ -14,6 +14,5 @@ class MyCustomApplication : Application()
             androidContext(applicationContext)
             modules(applicationModule)
         }
-
     }
 }

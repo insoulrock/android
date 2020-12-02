@@ -24,15 +24,15 @@ class Router: KoinComponent
             is FragmentType.RedFragment -> openFragment(FragmentRed())
             is FragmentType.MaterialFragment -> openFragment(FragmentMaterial())
             is FragmentType.RecyclerFragment -> openFragment(FragmentRecyclerView())
-            is FragmentType.MainFragment -> openFragment(FragmentMenu())
+            is FragmentType.MainFragment -> openFragment(FragmentMenu(), false)
         }
     }
 
-    private fun openFragment(fragment: Fragment)
+    private fun openFragment(fragment: Fragment, needAddToBackStack: Boolean = true)
     {
         fragmentManager.beginTransaction().apply {
             replace(R.id.fragment_container, fragment)
-            addToBackStack(null)
+            if(needAddToBackStack) addToBackStack(null)
             commit() }
     }
 }

@@ -1,6 +1,9 @@
 package com.example.androidtestapp.models
 
 class TickerModel {
+    constructor(instrument:String){
+        this.instrument = instrument
+    }
     public var instrument: String? = null
     public var last: Double? = null
     var percentChange: Double? = null

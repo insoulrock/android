@@ -11,9 +11,9 @@ import kotlin.concurrent.thread
 class HttpRequester {
     private var client: OkHttpClient = OkHttpClient()
 
-    fun Get(url: String) : Single<String>
+    fun get(url: String) : Observable<String>
     {
-        return Single.fromCallable  {
+        return Observable.fromCallable  {
             try {
                 var request: Request = Request.Builder().url(url).build()
                 var resp = client.newCall(request).execute()

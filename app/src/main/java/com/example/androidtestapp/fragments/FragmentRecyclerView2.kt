@@ -11,17 +11,14 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.androidtestapp.R
 import com.example.androidtestapp.helpers.DataProvider
 import com.example.androidtestapp.helpers.RecyclerAdapter
-import com.example.androidtestapp.helpers.TickerState
+import com.example.androidtestapp.helpers.TickerCache
 import com.example.androidtestapp.models.TickerModel
-import com.jakewharton.rxbinding2.view.RxView
 import com.jakewharton.rxbinding2.widget.RxTextView
 import io.reactivex.Observable
-import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.functions.BiFunction
 import io.reactivex.schedulers.Schedulers
-import io.reactivex.subjects.PublishSubject
 import kotlinx.android.synthetic.main.fragment_recycler_view.*
 import org.koin.android.ext.android.inject
 import java.util.concurrent.TimeUnit
@@ -29,6 +26,7 @@ import java.util.concurrent.TimeUnit
 class FragmentRecyclerView2 : Fragment() {
     private lateinit var recyclerAdapter: RecyclerAdapter
     private val dataProvider: DataProvider by inject()
+    private val tickerCache: TickerCache by inject()
     private var disposableBag: CompositeDisposable = CompositeDisposable()
 
     override fun onCreateView(
@@ -43,31 +41,69 @@ class FragmentRecyclerView2 : Fragment() {
         recyclerAdapter = RecyclerAdapter(view.context)
         initRecyclerView()
 
-
-        val disposable = Observable.interval(0, 5, TimeUnit.SECONDS)
+        val disposable = Observable.interval(0, 1, TimeUnit.SECONDS)
             .subscribeOn(Schedulers.io())
             .flatMap {
-                dataProvider.getTickers()
+                tickerCache.getTickers()
             }
             .subscribeOn(Schedulers.computation())
-            .zipWith(
-                RxTextView.textChanges(textEditFilter)
-                    .debounce(500, TimeUnit.MILLISECONDS)
-                    .map { it.toString() },
-                BiFunction<List<TickerModel>, String, List<TickerModel>> { tickersList, filterText ->
-                    tickersList.filter { it.instrument?.startsWith(filterText.toUpperCase()) == true }
-                })
-                //Сделать сортировку по названию тикета и изменению %
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
-                recyclerAdapter.submitList(it)
+                Log.d("FragmentRecyclerView2", "getTickers")
+
+                var tickers = it
+
+                var filterText = textEditFilter.text.toString()
+                if(!filterText.isNullOrEmpty()) {
+                    tickers = tickers.filter { x -> x.instrument?.contains(filterText, true) == true }
+                }
+
+                if(switchSortDesc.isChecked){
+                    tickers = tickers.sortedByDescending { t-> t.percentChange }
+                }
+
+                recyclerAdapter.submitList(tickers)
                 if (it.count() > 0) {
                     progressBar?.visibility = View.GONE
                 }
             }, {
                 Log.e("123", it.localizedMessage, it)
             })
+
+//        val disposable = Observable.interval(0, 2, TimeUnit.SECONDS)
+//            .flatMap {
+//                getTickersFiltered()
+//            }
+//            .observeOn(AndroidSchedulers.mainThread())
+//            .subscribe({
+//                var tickers = it
+//                if(switchSortDesc.isChecked)
+//                {
+//                    tickers = it.sortedByDescending { t->t.percentChange }
+//                }
+//                recyclerAdapter.submitList(tickers)
+//                if (it.count() > 0) {
+//                    progressBar?.visibility = View.GONE
+//                }
+//            }, {
+//                Log.e("123", it.localizedMessage, it)
+//            })
         disposableBag.add(disposable)
+    }
+
+    fun getTickersFiltered(): Observable<List<TickerModel>>{
+        return dataProvider.getTickers()
+            .subscribeOn(Schedulers.computation())
+            .zipWith(
+                RxTextView.textChanges(textEditFilter)
+                    .debounce(500, TimeUnit.MILLISECONDS)
+                    .map { it.toString() },
+                BiFunction<List<TickerModel>, String, List<TickerModel>> { tickersList, filterText ->
+                    tickersList.filter {
+                        it.instrument?.startsWith(filterText.toUpperCase()) == true
+                    }
+                })
+            .observeOn(AndroidSchedulers.mainThread())
     }
 
     override fun onPause() {

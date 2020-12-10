@@ -6,4 +6,5 @@ val applicationModule = module {
     single { Router() }
     single { DataProvider() }
     single { HttpRequester() }
+    single { TickerCache() }
 }

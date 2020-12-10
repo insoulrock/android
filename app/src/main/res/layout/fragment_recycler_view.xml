@@ -11,12 +11,11 @@
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/textInputFilterLayout"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:endIconMode="clear_text"
         app:helperText="Enter name"
         app:helperTextEnabled="true"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -24,8 +23,8 @@
             android:id="@+id/textEditFilter"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:singleLine="true"
             android:gravity="start"
+            android:singleLine="true"
             android:textStyle="bold" />
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -39,7 +38,7 @@
         app:layout_constraintTop_toBottomOf="@+id/textInputFilterLayout"
         tools:visibility="visible" />
 
-    <ProgressBar
+    <androidx.core.widget.ContentLoadingProgressBar
         android:id="@+id/progressBar"
         style="?android:attr/progressBarStyleInverse"
         android:layout_width="wrap_content"
@@ -49,5 +48,14 @@
         app:layout_constraintStart_toStartOf="@+id/recycler_view"
         app:layout_constraintTop_toTopOf="@+id/recycler_view" />
 
+    <com.google.android.material.switchmaterial.SwitchMaterial
+        android:id="@+id/switchSortDesc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Sort"
+        app:layout_constraintBottom_toTopOf="@+id/recycler_view"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/textInputFilterLayout"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

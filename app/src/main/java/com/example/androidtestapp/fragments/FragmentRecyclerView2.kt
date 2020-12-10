@@ -13,6 +13,7 @@ import com.example.androidtestapp.helpers.DataProvider
 import com.example.androidtestapp.helpers.RecyclerAdapter
 import com.example.androidtestapp.helpers.TickerState
 import com.example.androidtestapp.models.TickerModel
+import com.jakewharton.rxbinding2.view.RxView
 import com.jakewharton.rxbinding2.widget.RxTextView
 import io.reactivex.Observable
 import io.reactivex.Single
@@ -41,14 +42,18 @@ class FragmentRecyclerView2 : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         recyclerAdapter = RecyclerAdapter(view.context)
         initRecyclerView()
+
+
         val disposable = Observable.interval(0, 5, TimeUnit.SECONDS)
-            .observeOn(Schedulers.io())
+            .subscribeOn(Schedulers.io())
             .flatMap {
                 dataProvider.getTickers()
             }
-            .observeOn(Schedulers.computation())
+            .subscribeOn(Schedulers.computation())
             .zipWith(
-                RxTextView.textChanges(textEditSearch).map { it.toString() },
+                RxTextView.textChanges(textEditFilter)
+                    .debounce(500, TimeUnit.MILLISECONDS)
+                    .map { it.toString() },
                 BiFunction<List<TickerModel>, String, List<TickerModel>> { tickersList, filterText ->
                     tickersList.filter { it.instrument?.startsWith(filterText.toUpperCase()) == true }
                 })
@@ -57,7 +62,7 @@ class FragmentRecyclerView2 : Fragment() {
             .subscribe({
                 recyclerAdapter.submitList(it)
                 if (it.count() > 0) {
-                    recycler_view_loading?.visibility = View.GONE
+                    progressBar?.visibility = View.GONE
                 }
             }, {
                 Log.e("123", it.localizedMessage, it)

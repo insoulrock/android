@@ -14,7 +14,6 @@
         android:layout_height="wrap_content"
         android:text="@string/ticker_name_text"
         android:textStyle="bold"
-        android:layout_marginStart="16dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         />

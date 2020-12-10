@@ -46,7 +46,7 @@ class FragmentRecyclerView : Fragment() {
 //            .schedulePeriodicallyDirect({ addDataSet() }, 0, 5, TimeUnit.SECONDS)
 //        disposableBag.add(disposable)
 
-        val rxViewDis = RxTextView.textChanges(textEditSearch)
+        val rxViewDis = RxTextView.textChanges(textEditFilter)
             .debounce(500, TimeUnit.MILLISECONDS)
             .flatMap {
                 tickerState
@@ -79,7 +79,7 @@ class FragmentRecyclerView : Fragment() {
                 {
                     recyclerAdapter.submitList(it)
                     if (it.count() > 0) {
-                        recycler_view_loading?.visibility = View.GONE
+                        progressBar?.visibility = View.GONE
                     }
                 }
             )
@@ -99,7 +99,7 @@ class FragmentRecyclerView : Fragment() {
                 {
                     recyclerAdapter.submitList(it)
                     if (it.count() > 0) {
-                        recycler_view_loading?.visibility = View.GONE
+                        progressBar?.visibility = View.GONE
                     }
                     Log.d("123", "addDataSet ${Thread.currentThread()}")
                 },

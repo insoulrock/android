@@ -14,8 +14,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:endIconMode="clear_text"
-        app:helperText="Enter name"
-        app:helperTextEnabled="true"
+        app:layout_constraintEnd_toStartOf="@+id/switchSortDesc"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -24,12 +23,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="start"
+            android:hint="Enter name"
             android:singleLine="true"
             android:textStyle="bold" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view"
+        android:layout_marginTop="4dp"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -51,11 +52,13 @@
     <com.google.android.material.switchmaterial.SwitchMaterial
         android:id="@+id/switchSortDesc"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        android:paddingStart="16dp"
         android:text="Sort"
-        app:layout_constraintBottom_toTopOf="@+id/recycler_view"
+        app:layout_constraintBottom_toBottomOf="@+id/textInputFilterLayout"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/textInputFilterLayout"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/textInputFilterLayout"
+        app:layout_constraintVertical_bias="0.592" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

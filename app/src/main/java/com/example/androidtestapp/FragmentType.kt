@@ -8,4 +8,5 @@ sealed class FragmentType
     object MaterialFragment: FragmentType()
     object RecyclerFragment: FragmentType()
     object MainFragment: FragmentType()
+    object ServiceFragment: FragmentType()
 }

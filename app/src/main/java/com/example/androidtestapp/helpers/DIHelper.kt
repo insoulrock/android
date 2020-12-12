@@ -7,4 +7,5 @@ val applicationModule = module {
     single { DataProvider() }
     single { HttpRequester() }
     single { TickerCache() }
+    single { RecyclerViewHelper() }
 }

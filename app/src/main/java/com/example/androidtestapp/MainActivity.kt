@@ -11,8 +11,8 @@ import org.koin.core.component.KoinComponent
 import java.util.*
 
 class MainActivity : AppCompatActivity(), KoinComponent {
-    private val LOG_TAG: String = "myLogs";
-    private val EXTRA_KEY: String = "key1";
+    private val LOG_TAG: String = "myLogs"
+    private val EXTRA_KEY: String = "key1"
     private val router:Router by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -23,7 +23,7 @@ class MainActivity : AppCompatActivity(), KoinComponent {
         router.showFragment(FragmentType.MainFragment)
     }
 
-    fun onClickOpenActivityWindows(view: View)
+    fun onClickOpenSecondActivityWindows(view: View)
     {
         var intent = Intent(this, SecondActivity::class.java)
         intent.putExtra(EXTRA_KEY, "Hello!")
@@ -38,8 +38,8 @@ class MainActivity : AppCompatActivity(), KoinComponent {
         router.showFragment(FragmentType.RecyclerFragment)
     }
 
-    fun openMainWindow(view: View)
+    fun onClickOpenService(view: View)
     {
-        router.showFragment(FragmentType.GreenFragment)
+        router.showFragment(FragmentType.ServiceFragment)
     }
 }

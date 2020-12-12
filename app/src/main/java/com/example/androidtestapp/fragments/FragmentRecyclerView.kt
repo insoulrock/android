@@ -11,15 +11,14 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.androidtestapp.R
 import com.example.androidtestapp.helpers.DataProvider
 import com.example.androidtestapp.helpers.RecyclerAdapter
-import com.example.androidtestapp.helpers.TickerState
-import com.example.androidtestapp.models.TickerModel
+import com.example.androidtestapp.helpers.RecyclerViewHelper
+import com.example.androidtestapp.helpers.TickerCache
+import com.jakewharton.rxbinding2.view.RxView
 import com.jakewharton.rxbinding2.widget.RxTextView
 import io.reactivex.Observable
-import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
-import io.reactivex.subjects.PublishSubject
 import kotlinx.android.synthetic.main.fragment_recycler_view.*
 import org.koin.android.ext.android.inject
 import java.util.concurrent.TimeUnit
@@ -27,8 +26,10 @@ import java.util.concurrent.TimeUnit
 class FragmentRecyclerView : Fragment() {
     private lateinit var recyclerAdapter: RecyclerAdapter
     private val dataProvider: DataProvider by inject()
-    private var disposableBag: CompositeDisposable = CompositeDisposable()
-    private val tickerState: PublishSubject<List<TickerModel>> = PublishSubject.create()
+    private val tickerCache:TickerCache by inject()
+    private var disBag: CompositeDisposable = CompositeDisposable()
+    private val LOG_TAG:String = "FragmentRecyclerView"
+    private val subscriber: RecyclerViewHelper by inject()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -39,75 +40,63 @@ class FragmentRecyclerView : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        dataProvider.getTickers().subscribe(tickerState)
-
         recyclerAdapter = RecyclerAdapter(view.context)
-//        val disposable = AndroidSchedulers.mainThread()
-//            .schedulePeriodicallyDirect({ addDataSet() }, 0, 5, TimeUnit.SECONDS)
-//        disposableBag.add(disposable)
+        initRecyclerView()
 
-        val rxViewDis = RxTextView.textChanges(textEditFilter)
-            .debounce(500, TimeUnit.MILLISECONDS)
-            .flatMap {
-                tickerState
-                    .map { tickersList ->
-                    tickersList.filter { x ->
-                        x.instrument?.startsWith(it) == true
-                    }
-                }
-            }
+        disBag.add(Observable.interval(0, 1, TimeUnit.SECONDS)
             .subscribeOn(Schedulers.io())
+            .flatMap {
+                tickerCache.getTickers()
+            }
+            .subscribeOn(Schedulers.computation())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
-                recyclerAdapter.submitList(it)
-                Log.d("123", it.toString())
-            }, {
-                Log.e("123", "", it)
-            })
+                Log.d(LOG_TAG, "getTickers")
 
-        disposableBag.add(rxViewDis)
+                var tickers = it
+
+                var filterText = textEditFilter.text.toString()
+                if(!filterText.isNullOrEmpty()) {
+                    tickers = tickers.filter { x -> x.instrument?.contains(filterText, true) == true }
+                }
+
+                if(switchSortDesc.isChecked){
+                    tickers = tickers.sortedByDescending { t-> t.percentChange }
+                }
+
+                recyclerAdapter.submitList(tickers)
+                if (it.count() > 0) {
+                    progressBar?.visibility = View.GONE
+                }
+            }, {
+                Log.e(LOG_TAG, it.localizedMessage, it)
+            }))
+
+        subscriber.startListen(getTextFilter(), getSwitchSort())
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        initRecyclerView()
-//        addDataSet()
-        tickerState
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribeOn(Schedulers.io())
-            .subscribe(
-                {
-                    recyclerAdapter.submitList(it)
-                    if (it.count() > 0) {
-                        progressBar?.visibility = View.GONE
-                    }
-                }
-            )
+    fun getTextFilter(): Observable<String>{
+        return RxTextView.textChanges(textEditFilter)
+            .debounce(300, TimeUnit.MILLISECONDS)
+            .map { it.toString() }
+            .subscribeOn(AndroidSchedulers.mainThread())
+    }
+
+    fun getSwitchSort(): Observable<Boolean>{
+        return RxView.clicks(switchSortDesc)
+            .map { switchSortDesc.isChecked  }
+            .subscribeOn(AndroidSchedulers.mainThread())
     }
 
     override fun onPause() {
         super.onPause()
-        disposableBag.dispose()
+        Log.d(LOG_TAG, "onPause")
     }
 
-    private fun addDataSet() {
-        Log.d("123", "${Thread.currentThread()} has run1.")
-        var disposable = dataProvider.getTickers()
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(
-                {
-                    recyclerAdapter.submitList(it)
-                    if (it.count() > 0) {
-                        progressBar?.visibility = View.GONE
-                    }
-                    Log.d("123", "addDataSet ${Thread.currentThread()}")
-                },
-                {
-                    Log.d(tag, it.localizedMessage.toString())
-                }
-            )
-        disposableBag.add(disposable)
+    override fun onStop() {
+        super.onStop()
+        Log.d(LOG_TAG, "onStop")
+        disBag.dispose()
     }
 
     private fun initRecyclerView() {

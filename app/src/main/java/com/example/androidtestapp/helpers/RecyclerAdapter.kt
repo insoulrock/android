@@ -9,18 +9,36 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.layout_recycler_view.view.*
 import com.example.androidtestapp.R
 import com.example.androidtestapp.models.TickerModel
+import com.google.android.material.textfield.TextInputEditText
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.fragment_recycler_view.*
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 import java.lang.Exception
 import java.util.concurrent.TimeUnit
 
 class RecyclerAdapter constructor(val context: Context) :
-    RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+    RecyclerView.Adapter<RecyclerView.ViewHolder>(),
+    KoinComponent {
+
+    private val LOG_TAG:String = "RecyclerAdapter"
+    private val helper:RecyclerViewHelper by inject()
     private var items: List<TickerModel> = ArrayList<TickerModel>()
     private val colorWinner: Int = context.resources.getColor(R.color.colorSoftGreen, context.theme)
     private val colorLoser: Int = context.resources.getColor(R.color.colorRed, context.theme)
+
+    init {
+        helper.getData()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({
+                Log.d(LOG_TAG, "RecyclerAdapter -> helper.getData()")
+                if(it.count() > 0)
+                    submitList(it)
+            })
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return ViewHolder(
@@ -53,6 +71,7 @@ class RecyclerAdapter constructor(val context: Context) :
     override fun getItemCount() = items.size
 
     fun submitList(tickers: List<TickerModel>) {
+        Log.d(LOG_TAG, "submitList -> elems count: ${tickers.size}")
         items = tickers.filter { t -> t.percentChange != null && t.last != null }
         notifyDataSetChanged()
     }

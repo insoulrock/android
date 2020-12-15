@@ -8,7 +8,11 @@ import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
+import java.sql.Date
+import java.time.format.DateTimeFormatter
+import java.util.*
 import java.util.concurrent.TimeUnit
+import kotlin.collections.ArrayList
 
 class TickerCache : KoinComponent, Disposable {
     private val URL_TICKERS: String = "https://api.crex24.com/v2/public/tickers"
@@ -45,5 +49,7 @@ class TickerCache : KoinComponent, Disposable {
         return disBag.size() == 0
     }
 
-    fun getTickers() = Observable.just(tickers)
+    fun getTickers():Observable<List<TickerModel>> {
+        return Observable.just(tickers)
+    }
 }

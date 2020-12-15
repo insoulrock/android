@@ -13,6 +13,7 @@ import com.example.androidtestapp.helpers.DataProvider
 import com.example.androidtestapp.helpers.RecyclerAdapter
 import com.example.androidtestapp.helpers.RecyclerViewHelper
 import com.example.androidtestapp.helpers.TickerCache
+import com.google.android.material.textfield.TextInputEditText
 import com.jakewharton.rxbinding2.view.RxView
 import com.jakewharton.rxbinding2.widget.RxTextView
 import io.reactivex.Observable
@@ -40,52 +41,10 @@ class FragmentRecyclerView : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        subscriber.startListen(textEditFilter, switchSortDesc)
         recyclerAdapter = RecyclerAdapter(view.context)
         initRecyclerView()
-
-        disBag.add(Observable.interval(0, 1, TimeUnit.SECONDS)
-            .subscribeOn(Schedulers.io())
-            .flatMap {
-                tickerCache.getTickers()
-            }
-            .subscribeOn(Schedulers.computation())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({
-                Log.d(LOG_TAG, "getTickers")
-
-                var tickers = it
-
-                var filterText = textEditFilter.text.toString()
-                if(!filterText.isNullOrEmpty()) {
-                    tickers = tickers.filter { x -> x.instrument?.contains(filterText, true) == true }
-                }
-
-                if(switchSortDesc.isChecked){
-                    tickers = tickers.sortedByDescending { t-> t.percentChange }
-                }
-
-                recyclerAdapter.submitList(tickers)
-                if (it.count() > 0) {
-                    progressBar?.visibility = View.GONE
-                }
-            }, {
-                Log.e(LOG_TAG, it.localizedMessage, it)
-            }))
-
-        subscriber.startListen(getTextFilter(), getSwitchSort())
-    }
-
-    fun getTextFilter(): Observable<String>{
-        return RxTextView.textChanges(textEditFilter)
-            .debounce(300, TimeUnit.MILLISECONDS)
-            .map { it.toString() }
-            .subscribeOn(AndroidSchedulers.mainThread())
-    }
-
-    fun getSwitchSort(): Observable<Boolean>{
-        return RxView.clicks(switchSortDesc)
-            .map { switchSortDesc.isChecked  }
-            .subscribeOn(AndroidSchedulers.mainThread())
+        progressBar?.visibility = View.GONE
     }
 
     override fun onPause() {

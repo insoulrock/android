@@ -9,4 +9,5 @@ sealed class FragmentType
     object RecyclerFragment: FragmentType()
     object MainFragment: FragmentType()
     object ServiceFragment: FragmentType()
+    object NotificationFragment: FragmentType()
 }

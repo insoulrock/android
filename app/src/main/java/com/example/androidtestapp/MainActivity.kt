@@ -42,4 +42,9 @@ class MainActivity : AppCompatActivity(), KoinComponent {
     {
         router.showFragment(FragmentType.ServiceFragment)
     }
+
+    fun onClickOpenNotifications(view: View)
+    {
+        router.showFragment(FragmentType.NotificationFragment)
+    }
 }

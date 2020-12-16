@@ -1,5 +1,6 @@
 package com.example.androidtestapp
 
+import android.app.PendingIntent
 import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -8,6 +9,7 @@ import android.util.Log
 import android.view.View
 import android.widget.TextView
 import androidx.annotation.MainThread
+import androidx.core.app.NotificationManagerCompat
 import io.reactivex.*
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers

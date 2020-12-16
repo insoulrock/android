@@ -25,6 +25,7 @@ class Router: KoinComponent
             is FragmentType.MaterialFragment -> openFragment(FragmentMaterial())
             is FragmentType.RecyclerFragment -> openFragment(FragmentRecyclerView())
             is FragmentType.ServiceFragment -> openFragment(FragmentService())
+            is FragmentType.NotificationFragment -> openFragment(FragmentNotification())
             is FragmentType.MainFragment -> openFragment(FragmentMenu(), false)
         }
     }

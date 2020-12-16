@@ -35,7 +35,7 @@ class RecyclerAdapter constructor(val context: Context) :
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
                 Log.d(LOG_TAG, "RecyclerAdapter -> helper.getData()")
-                if(it.count() > 0)
+//                if(it.count() > 0)
                     submitList(it)
             })
     }

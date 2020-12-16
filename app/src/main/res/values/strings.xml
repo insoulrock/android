@@ -20,4 +20,5 @@
     <string name="btn_got_to_services">Go To Services</string>
     <string name="btn_start_service">Start Service</string>
     <string name="btn_stop_service">Stop Service</string>
+    <string name="btn_got_to_notifications">Go To Notifications</string>
 </resources>

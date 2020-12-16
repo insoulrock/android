@@ -17,9 +17,14 @@ class FragmentNotification : Fragment(), KoinComponent {
         super.onViewCreated(view, savedInstanceState)
 
         btn_send_notification.setOnClickListener{
-            NewsNotifier(context as Context)
-                .sendNotification()
+            notifyCustomMessage()
         }
+    }
+
+    private fun notifyCustomMessage(){
+        NewsNotifier(context as Context)
+            .sendNotification(editText_news_title.text.toString(),
+                editText_news_body.text.toString())
     }
 
     override fun onCreateView(

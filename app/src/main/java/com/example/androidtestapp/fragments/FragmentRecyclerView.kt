@@ -26,8 +26,6 @@ import java.util.concurrent.TimeUnit
 
 class FragmentRecyclerView : Fragment() {
     private lateinit var recyclerAdapter: RecyclerAdapter
-    private val dataProvider: DataProvider by inject()
-    private val tickerCache:TickerCache by inject()
     private var disBag: CompositeDisposable = CompositeDisposable()
     private val LOG_TAG:String = "FragmentRecyclerView"
     private val subscriber: RecyclerViewHelper by inject()

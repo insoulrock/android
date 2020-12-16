@@ -21,4 +21,5 @@
     <string name="btn_start_service">Start Service</string>
     <string name="btn_stop_service">Stop Service</string>
     <string name="btn_got_to_notifications">Go To Notifications</string>
+    <string name="btn_send_notification">Send</string>
 </resources>

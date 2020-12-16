@@ -13,8 +13,8 @@ import com.example.androidtestapp.NewsActivity
 import com.example.androidtestapp.R
 
 class NewsNotifier(var context: Context) {
-    private val CHANNEL_ID = "channel_id_ex_01"
-    private val notificationId = 101
+    private val CHANNEL_ID:String = "channel_id_ex_01"
+    private val notificationId:Int = 123456
 
     init {
         createChannel()
@@ -37,28 +37,36 @@ class NewsNotifier(var context: Context) {
         }
     }
 
-    fun sendNotification(){
+    fun sendNotification(title:String, text:String){
 
         var intent = Intent(context, NewsActivity::class.java)
             .apply {
                 flags = Intent.FLAG_ACTIVITY_NEW_TASK
-                putExtra("123", notificationId)
+                putExtra("notificationId", notificationId)
+                putExtra("notificationTitle", title)
+                putExtra("notificationText", text)
             }
 
-        val pendingIntent: PendingIntent = PendingIntent.getActivity(context, 0, intent, 0)
+        val pendingIntent: PendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
 
         //Фабрика не успевает создать...почему то
-        val bitmap = BitmapFactory.decodeResource(context?.resources, R.drawable.ic_rabbit)
-        val bitmap2 = BitmapFactory.decodeResource(context?.resources, R.drawable.ic_cat)
+        val bitmap = BitmapFactory.decodeResource(context.resources, R.drawable.ic_rabbit)
+        val bitmap2 = BitmapFactory.decodeResource(context.resources, R.drawable.ic_cat)
 
-        val builder =  NotificationCompat.Builder((context as Context), CHANNEL_ID)
+        val builder =  NotificationCompat.Builder(context , CHANNEL_ID)
             .setSmallIcon(R.drawable.ic_rabbit)
-            .setContentTitle("Example setContentTitle")
-            .setContentText("Example setContentText")
+            .setContentTitle(title)
+            .setContentText(text)
             .setContentIntent(pendingIntent)
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-        with(NotificationManagerCompat.from((context as Context))){
+        with(NotificationManagerCompat.from(context)){
             notify(notificationId, builder.build())
+        }
+    }
+
+    fun cancelNotification(notificationId: Int){
+        with(NotificationManagerCompat.from(context)){
+            cancel(notificationId)
         }
     }
 }

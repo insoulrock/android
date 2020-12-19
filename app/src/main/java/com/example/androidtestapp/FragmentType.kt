@@ -10,4 +10,5 @@ sealed class FragmentType
     object MainFragment: FragmentType()
     object ServiceFragment: FragmentType()
     object NotificationFragment: FragmentType()
+    object HelpFragment: FragmentType()
 }

@@ -27,7 +27,7 @@ import java.util.concurrent.TimeUnit
 class FragmentRecyclerView : Fragment() {
     private lateinit var recyclerAdapter: RecyclerAdapter
     private var disBag: CompositeDisposable = CompositeDisposable()
-    private val LOG_TAG:String = "FragmentRecyclerView"
+    private val LOG_TAG = FragmentRecyclerView::class.java.simpleName
     private val subscriber: RecyclerViewHelper by inject()
 
     override fun onCreateView(
@@ -39,7 +39,21 @@ class FragmentRecyclerView : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        subscriber.startListen(textEditFilter, switchSortDesc)
+        subscriber.startListen(
+            RxTextView.textChanges(textEditFilter)
+                .debounce(300, TimeUnit.MILLISECONDS)
+                .map {
+                    Log.d("RecyclerViewHelper", "filter = $it.toString() ")
+                    it.toString()
+                }
+            ,
+            RxView.clicks(switchSortDesc)
+                .map {
+                    Log.d("RecyclerViewHelper", "percentSort = $switchSortDesc.isChecked")
+                    switchSortDesc.isChecked
+                }
+                .subscribeOn(AndroidSchedulers.mainThread())
+        )
         recyclerAdapter = RecyclerAdapter(view.context)
         initRecyclerView()
         progressBar?.visibility = View.GONE

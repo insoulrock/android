@@ -9,6 +9,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.TextView
+import androidx.appcompat.app.AlertDialog
+import com.example.androidtestapp.FragmentType
 import com.example.androidtestapp.R
 import com.example.androidtestapp.helpers.DataProvider
 import com.example.androidtestapp.helpers.Router
@@ -19,6 +21,8 @@ import org.koin.core.component.KoinComponent
 import kotlin.random.Random
 
 class FragmentMaterial : Fragment(), KoinComponent {
+    private val router:Router by inject()
+
     private lateinit var editTextRandom: TextInputEditText
     private lateinit var textViewWins: TextInputEditText
     private lateinit var textViewLosses: TextInputEditText
@@ -42,6 +46,13 @@ class FragmentMaterial : Fragment(), KoinComponent {
         textViewLosses = view.findViewById(R.id.textViewLossesCount)
 
         view.buttonRandom.setOnClickListener { onClickRenerateRandom(view) }
+        view.btn_help.setOnClickListener{
+            AlertDialog.Builder(activity!!)
+                .setMessage("123123123")
+//                Html.fromHtml(resources.getString(R.string.help_dialog_main)))
+                .setPositiveButton(R.string.action_ok) { dialog, _ -> dialog.dismiss() }
+                .create()
+        }
         textViewWins.setText(countWins.toString(), TextView.BufferType.EDITABLE)
         textViewLosses.setText(countLosses.toString(), TextView.BufferType.EDITABLE)
     }

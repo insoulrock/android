@@ -10,6 +10,7 @@ import android.view.View
 import android.widget.TextView
 import androidx.annotation.MainThread
 import androidx.core.app.NotificationManagerCompat
+import com.example.androidtestapp.fragments.HelpFragment
 import io.reactivex.*
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -36,6 +37,7 @@ class SecondActivity : AppCompatActivity() {
 //        Log.d(LOG_TAG, "SecondActivity onCreate $extraValue")
 //        var textView = findViewById<TextView>(R.id.textViewMain)
 //        textView.text = extraValue
+        button_sec_test.setOnClickListener { HelpFragment().show(supportFragmentManager, "help") }
     }
 
     override fun onDestroy() {

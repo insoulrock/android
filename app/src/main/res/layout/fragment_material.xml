@@ -93,6 +93,16 @@
         app:layout_constraintTop_toBottomOf="@+id/edit_text_random_result"
         app:layout_constraintVertical_bias="0.094" />
 
+    <Button
+        android:id="@+id/btn_help"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/btn_help_name"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonRandom"></Button>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
 
 

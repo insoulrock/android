@@ -56,16 +56,10 @@ class FragmentRecyclerView : ObservableSourceFragment<UiEvent>(), Consumer<ViewM
         disBag.add(Observable.merge(
             RxTextView.textChanges(textEditFilter)
                 .debounce(300, TimeUnit.MILLISECONDS)
-                .map {
-                    Log.d("RecyclerViewHelper", "filter = $it.toString() ")
-                    filter = it.toString()
-                },
+                .map { filter = it.toString() },
             Observable.interval(1000,10000, TimeUnit.MILLISECONDS),
             RxView.clicks(switchSortDesc)
-                .map {
-                    Log.d("RecyclerViewHelper", "percentSort = $switchSortDesc.isChecked")
-                    needSort = switchSortDesc.isChecked
-                }
+                .map { needSort = switchSortDesc.isChecked }
                 .subscribeOn(AndroidSchedulers.mainThread()))
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())

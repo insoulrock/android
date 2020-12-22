@@ -73,7 +73,7 @@ class FeatureRecyclerView :
                             tickers = tickers.sortedByDescending { x -> x.percentChange }
 
                         Log.d("ActorImpl", "tickerCount = ${tickers.count()}, filter=${wish.filter}, needSort=${wish.needSort}")
-                        Effect.SuccessfullyLoaded(tickers!!) as Effect
+                        Effect.SuccessfullyLoaded(tickers) as Effect
                     }
                     .startWith(Observable.just(Effect.StartLoading))
                     .onErrorReturn { Effect.ErrorLoading(it) }

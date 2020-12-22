@@ -17,6 +17,5 @@ class NewsListener(
 
     private fun sendToast(message:String) {
         Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
-        Log.d("123", message)
     }
 }

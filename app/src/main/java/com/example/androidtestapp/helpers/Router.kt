@@ -4,6 +4,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import com.example.androidtestapp.*
 import com.example.androidtestapp.fragments.*
+import com.example.androidtestapp.ui.recyclerview.FragmentRecyclerView
 import org.koin.core.component.KoinComponent
 
 class Router: KoinComponent

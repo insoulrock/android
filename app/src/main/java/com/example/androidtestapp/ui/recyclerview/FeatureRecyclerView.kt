@@ -1,54 +1,90 @@
 package com.example.androidtestapp.ui.recyclerview
 
-import com.badoo.mvicore.element.Reducer
-import com.badoo.mvicore.feature.ReducerFeature
+import android.util.Log
+import com.badoo.mvicore.element.*
+import com.badoo.mvicore.feature.ActorReducerFeature
+import com.example.androidtestapp.helpers.RecyclerViewHelper
+import com.example.androidtestapp.helpers.TickerCache
 import com.example.androidtestapp.models.TickerModel
+import io.reactivex.Observable
+import io.reactivex.android.schedulers.AndroidSchedulers
+import org.koin.core.Koin
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 
 class FeatureRecyclerView :
-    ReducerFeature<FeatureRecyclerView.Wish, FeatureRecyclerView.State, FeatureRecyclerView.News>(
+    ActorReducerFeature<FeatureRecyclerView.Wish, FeatureRecyclerView.Effect, FeatureRecyclerView.State, FeatureRecyclerView.News>(
         initialState = State(),
+        bootstrapper = BootStrapperImpl(),
+        actor = ActorImpl(),
         reducer = ReducerImpl(),
         newsPublisher = NewsPublisherImpl()
-    ) {
-    //TODO: Разобраться, нужно ли инитить переменные значениями
+    ), KoinComponent {
+
     data class State(
-        val tickersCount: Int = 0,
-        val tickers: List<TickerModel> = ArrayList<TickerModel>(),
-        val needSort: Boolean = false,
-        val filter: String? = ""
+        val isLoading: Boolean = false,
+        val tickers: List<TickerModel> = ArrayList<TickerModel>()
     )
 
     sealed class Wish {
-        data class SortTickers(val needSort: Boolean) : Wish()
-        data class FilterTickers(val filter: String?) : Wish()
+        data class LoadTickers(val filter: String, val needSort: Boolean) : Wish()
     }
 
-    class ReducerImpl : Reducer<State, Wish> {
-        override fun invoke(state: State, wish: Wish): State =
-            when (wish) {
-                is Wish.SortTickers -> state.copy(
-                    tickersCount = 0,
-                    tickers = ArrayList<TickerModel>(),
-                    filter = state.filter,
-                    needSort = wish.needSort
-                )
-                is Wish.FilterTickers -> state.copy(
-                    tickersCount = 0,
-                    tickers = ArrayList<TickerModel>(),
-                    filter = wish.filter,
-                    needSort = state.needSort
-                )
-            }
-    }
-    class NewsPublisherImpl: SimpleNewsPublisher<Wish, State, News>(){
-        override fun invoke(wish: Wish, state: State): News? = when(wish){
-            is Wish.SortTickers -> News.ToastOnClick("Need sort: ${wish.needSort}")
-            is Wish.FilterTickers -> News.ToastOnClick("Need sort: ${wish.filter}")
-        }
+    sealed class Effect {
+        object StartLoading : Effect()
+        data class SuccessfullyLoaded(val tickers: List<TickerModel>) : Effect()
+        data class ErrorLoading(val throwable: Throwable) : Effect()
     }
 
     sealed class News {
         data class ToastOnClick(val message: String) : News()
     }
 
+    class BootStrapperImpl : Bootstrapper<Wish> {
+        override fun invoke(): Observable<Wish> = Observable.just(Wish.LoadTickers("", false))
+    }
+
+    class ReducerImpl : Reducer<State, Effect> {
+        override fun invoke(state: State, effect: Effect): State =
+            when (effect) {
+                is Effect.StartLoading -> state.copy(
+                    isLoading = true
+                )
+                is Effect.SuccessfullyLoaded -> state.copy(
+                    isLoading = false,
+                    tickers = effect.tickers
+                )
+                is Effect.ErrorLoading -> state.copy(
+                    isLoading = false
+                )
+            }
+    }
+
+    class ActorImpl : Actor<State, Wish, Effect>, KoinComponent {
+        private val tickerCache: TickerCache by inject()
+        override fun invoke(state: State, wish: Wish): Observable<Effect> = when (wish) {
+            is Wish.LoadTickers -> {
+                tickerCache.getTickers()
+                    .map {
+                        var tickers = it
+                        if (!wish.filter.isNullOrEmpty())
+                            tickers = tickers.filter { x -> x.instrument?.contains(wish.filter, true) == true }
+                        if (wish.needSort)
+                            tickers = tickers.sortedByDescending { x -> x.percentChange }
+
+                        Log.d("ActorImpl", "tickerCount = ${tickers.count()}, filter=${wish.filter}, needSort=${wish.needSort}")
+                        Effect.SuccessfullyLoaded(tickers!!) as Effect
+                    }
+                    .startWith(Observable.just(Effect.StartLoading))
+                    .onErrorReturn { Effect.ErrorLoading(it) }
+            }
+        }
+    }
+
+    class NewsPublisherImpl : NewsPublisher<Wish, Effect, State, News> {
+        override fun invoke(action: Wish, effect: Effect, state: State): News? = when (effect) {
+            is Effect.ErrorLoading -> News.ToastOnClick("ErrorLoading: ${effect.throwable.localizedMessage}")
+            else -> null
+        }
+    }
 }

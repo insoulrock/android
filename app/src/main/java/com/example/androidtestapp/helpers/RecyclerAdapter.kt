@@ -24,21 +24,9 @@ class RecyclerAdapter constructor(val context: Context) :
     KoinComponent {
 
     private val LOG_TAG:String = "RecyclerAdapter"
-    private val helper:RecyclerViewHelper by inject()
     private var items: List<TickerModel> = ArrayList<TickerModel>()
     private val colorWinner: Int = context.resources.getColor(R.color.colorSoftGreen, context.theme)
     private val colorLoser: Int = context.resources.getColor(R.color.colorRed, context.theme)
-
-    init {
-        helper.getData()
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({
-                Log.d(LOG_TAG, "RecyclerAdapter -> helper.getData()")
-//                if(it.count() > 0)
-                    submitList(it)
-            })
-    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return ViewHolder(

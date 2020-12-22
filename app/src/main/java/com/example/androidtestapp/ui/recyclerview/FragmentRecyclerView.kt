@@ -15,78 +15,61 @@ import com.example.androidtestapp.ui.recyclerview.events.UiEvent
 import com.example.androidtestapp.ui.recyclerview.viewmodel.ViewModel
 import com.jakewharton.rxbinding2.view.RxView
 import com.jakewharton.rxbinding2.widget.RxTextView
+import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.functions.Consumer
+import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.fragment_recycler_view.*
-import org.koin.android.ext.android.inject
 import java.util.concurrent.TimeUnit
 
 class FragmentRecyclerView : ObservableSourceFragment<UiEvent>(), Consumer<ViewModel> {
     private lateinit var recyclerAdapter: RecyclerAdapter
     private var disBag: CompositeDisposable = CompositeDisposable()
     private val LOG_TAG = FragmentRecyclerView::class.java.simpleName
-//    private val subscriber: RecyclerViewHelper by inject()
-    private val bindings: RecyclerViewBindings = RecyclerViewBindings(this, FeatureRecyclerView(), NewsListener(context))
+    private lateinit var bindings: RecyclerViewBindings
+    private var filter: String = ""
+    private var needSort: Boolean = false
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
 
-
         return inflater.inflate(R.layout.fragment_recycler_view, container, false)
     }
 
     override fun accept(t: ViewModel) {
-//        textEditFilter.setText(t.filter)
-//        switchSortDesc.isChecked = t.needSort
-    }
-
-    private fun setupViews(){
-        textEditFilter.setOnClickListener { onNext(UiEvent.FilterEntered("R")) }
-        switchSortDesc.setOnClickListener { onNext(UiEvent.SortingSwitched(enabled = false)) }
+        progressBar?.visibility = if(t.isLoading) View.VISIBLE else View.GONE
+        Log.d(LOG_TAG, "isLoading = ${t.isLoading}")
+        recyclerAdapter?.submitList(t.tickers)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setupViews()
+        recyclerAdapter = RecyclerAdapter(view.context)
+        initRecyclerView()
+
+        bindings = RecyclerViewBindings(this, FeatureRecyclerView(), NewsListener(context))
         bindings.setup(this)
-//        disBag.add(RxTextView.textChanges(textEditFilter)
-//            .debounce(300, TimeUnit.MILLISECONDS)
-//            .map {
-//                Log.d("RecyclerViewHelper", "filter = $it.toString() ")
-//                it.toString()
-//            }
-//            .observeOn(AndroidSchedulers.mainThread())
-//            .subscribe(
-//                {
-//                onNext(UiEvent.FilterEntered("RRR"))
-//            },
-//                {
-//                    Log.e(LOG_TAG, it.localizedMessage)
-//                }
-//            )
-//        )
 
-//       disBag.add(RxView.clicks(switchSortDesc)
-//            .map {
-//                Log.d("RecyclerViewHelper", "percentSort = $switchSortDesc.isChecked")
-//                switchSortDesc.isChecked
-//            }
-//            .subscribeOn(AndroidSchedulers.mainThread())
-//            .subscribe({
-//                onNext(UiEvent.SortingSwitched(switchSortDesc.isChecked))
-//            },
-//                {
-//                    Log.e(LOG_TAG, it.localizedMessage)
-//                }
-//            ))
-
-//        subscriber.startListen(ss0, ss)
-//        recyclerAdapter = RecyclerAdapter(view.context)
-//        initRecyclerView()
-        progressBar?.visibility = View.GONE
+        disBag.add(Observable.merge(
+            RxTextView.textChanges(textEditFilter)
+                .debounce(300, TimeUnit.MILLISECONDS)
+                .map {
+                    Log.d("RecyclerViewHelper", "filter = $it.toString() ")
+                    filter = it.toString()
+                },
+            Observable.interval(1000,10000, TimeUnit.MILLISECONDS),
+            RxView.clicks(switchSortDesc)
+                .map {
+                    Log.d("RecyclerViewHelper", "percentSort = $switchSortDesc.isChecked")
+                    needSort = switchSortDesc.isChecked
+                }
+                .subscribeOn(AndroidSchedulers.mainThread()))
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe{ onNext(UiEvent.RefreshList(filter, needSort)) })
     }
 
     override fun onPause() {

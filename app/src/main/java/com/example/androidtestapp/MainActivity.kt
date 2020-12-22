@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.example.androidtestapp.helpers.Router
+import com.example.androidtestapp.ui.secondary.SecondActivity
 import org.koin.android.ext.android.inject
 import org.koin.core.component.KoinComponent
 import java.util.*

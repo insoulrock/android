@@ -1,6 +1,7 @@
 package com.example.androidtestapp.helpers
 
 import com.example.androidtestapp.fragments.FragmentNotification
+import com.example.androidtestapp.ui.secondary.SecondActivityBindings
 import org.koin.dsl.module
 
 val applicationModule = module {

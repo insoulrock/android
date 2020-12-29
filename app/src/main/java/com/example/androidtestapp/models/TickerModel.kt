@@ -1,8 +1,16 @@
 package com.example.androidtestapp.models
 
+import com.example.GetTickersQuery
+
 class TickerModel {
     constructor(instrument:String) {
         this.instrument = instrument
+    }
+
+    constructor(ticker: GetTickersQuery.Ticker){
+        instrument = ticker.pN
+        last = ticker.l
+        percentChange = ticker.pC
     }
     public var instrument: String? = null
     public var last: Double? = null

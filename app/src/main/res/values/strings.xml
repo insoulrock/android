@@ -24,6 +24,7 @@
     <string name="btn_send_notification">Send</string>
     <string name="btn_help_name">Help</string>
     <string name="action_ok">Ok</string>
+    <string name="btn_got_to_investbox">Go To InvestBox</string>
     <string name="help_dialog_main">
     <![CDATA[
         <h2>Новости</h2>
@@ -50,5 +51,9 @@
             <li>/////////////////////////////</li>
         </ul>
     ]]>
-</string>
+    </string>
+    <string name="title_activity_invest_box">InvestBoxActivity</string>
+    <string name="tab_ivnestplans">Invest Plans</string>
+    <string name="tab_investments">Investments</string>
+    <string name="tab_investhistory">History</string>
 </resources>

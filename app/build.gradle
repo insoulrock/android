@@ -1,6 +1,7 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'com.apollographql.apollo'
 
 android {
     compileSdkVersion 30
@@ -27,6 +28,12 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+    apollo {
+        generateKotlinModels.set(true)
+    }
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_1_8.toString()
+    }
 }
 //4.9.0
 dependencies {
@@ -43,6 +50,12 @@ dependencies {
     implementation 'com.jakewharton.rxbinding2:rxbinding-kotlin:2.0.0'
     //OkHttp
     implementation 'com.squareup.okhttp3:okhttp:3.10.0'
+    //orhanobut
+    implementation 'com.orhanobut:logger:2.2.0'
+    //graphql
+    implementation 'com.apollographql.apollo:apollo-runtime:2.4.6'
+//    implementation 'com.apollographql.apollo:apollo-rx3-support:2.4.6'
+    implementation 'com.apollographql.apollo:apollo-rx2-support:2.4.6'
 
     implementation 'com.android.support:multidex:1.0.3'
     implementation 'com.google.code.gson:gson:2.8.5'
@@ -54,6 +67,8 @@ dependencies {
     implementation "org.koin:koin-android:2.2.1"
     implementation 'com.google.android.material:material:1.2.1'
     implementation 'androidx.recyclerview:recyclerview:1.0.0'
+    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.2.0'
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'

@@ -6,7 +6,10 @@ import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.example.androidtestapp.helpers.Router
+import com.example.androidtestapp.ui.investbox.InvestBoxActivity
 import com.example.androidtestapp.ui.secondary.SecondActivity
+import com.orhanobut.logger.AndroidLogAdapter
+import com.orhanobut.logger.Logger
 import org.koin.android.ext.android.inject
 import org.koin.core.component.KoinComponent
 import java.util.*
@@ -19,7 +22,6 @@ class MainActivity : AppCompatActivity(), KoinComponent {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
         router.putFragmentManager(supportFragmentManager)
         router.showFragment(FragmentType.MainFragment)
     }
@@ -30,6 +32,9 @@ class MainActivity : AppCompatActivity(), KoinComponent {
         intent.putExtra(EXTRA_KEY, "Hello!")
         startActivity(intent)
     }
+
+    fun onClickOpenIvestBox(view: View) = startActivity(Intent(this, InvestBoxActivity::class.java))
+
     fun onClickOpenMaterial(view: View){
         router.showFragment((FragmentType.MaterialFragment))
     }

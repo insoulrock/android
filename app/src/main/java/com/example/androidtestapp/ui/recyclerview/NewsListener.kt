@@ -1,7 +1,6 @@
 package com.example.androidtestapp.ui.recyclerview
 
 import android.content.Context
-import android.util.Log
 import android.widget.Toast
 import io.reactivex.functions.Consumer
 
@@ -11,7 +10,7 @@ class NewsListener(
 
     override fun accept(news: FeatureRecyclerView.News) {
         when (news) {
-            is FeatureRecyclerView.News.ToastOnClick -> sendToast(news.message)
+            is FeatureRecyclerView.News.Notice -> sendToast(news.message)
         }
     }
 
